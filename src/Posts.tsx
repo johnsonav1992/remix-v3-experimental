@@ -17,9 +17,9 @@ export function Posts(this: Remix.Handle) {
 		this.update();
 
 		try {
-			const res = await fetch(
+			const res = (await fetch(
 				"https://jsonplaceholder.typicode.com/todos?_limit=5",
-			).then((res) => res.json());
+			).then((res) => res.json())) as Post[];
 
 			posts.push(...res);
 			loading = false;
