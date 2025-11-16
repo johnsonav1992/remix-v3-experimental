@@ -24,9 +24,7 @@ export function Posts(this: Remix.Handle) {
 			posts.push(...res);
 			loading = false;
 
-			this.update(() => {
-				console.log("hey");
-			});
+			this.update();
 		} catch (err) {
 			error = err as Error;
 			loading = false;
