@@ -1,12 +1,9 @@
 import type { Remix } from "@remix-run/dom";
 import { pressDown } from "@remix-run/events/press";
-import type { TodoStore } from "./TodoStore";
+import { App } from "./App";
 
-type AddTodoFormProps = {
-	store: TodoStore;
-};
-
-export function AddTodoForm(this: Remix.Handle, { store }: AddTodoFormProps) {
+export function AddTodoForm(this: Remix.Handle) {
+	const store = this.context.get(App);
 	let inputValue = "";
 
 	return () => (

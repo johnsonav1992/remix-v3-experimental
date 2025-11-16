@@ -1,12 +1,14 @@
 import type { Remix } from "@remix-run/dom";
+import { events } from "@remix-run/events";
+import { App } from "./App";
 import { TodoItem } from "./TodoItem";
-import type { TodoStore } from "./TodoStore";
+import { TodoStore } from "./TodoStore";
 
-type TodoListProps = {
-	store: TodoStore;
-};
+export function TodoList(this: Remix.Handle) {
+	const store = this.context.get(App);
 
-export function TodoList(this: Remix.Handle, { store }: TodoListProps) {
+	events(store, [TodoStore.todosChanged(() => this.update())]);
+
 	return () => (
 		<ul
 			css={{
@@ -28,7 +30,7 @@ export function TodoList(this: Remix.Handle, { store }: TodoListProps) {
 				</li>
 			) : (
 				store.todos.map((todo) => (
-					<TodoItem key={todo.id} todoId={todo.id} store={store} />
+					<TodoItem key={todo.id} todoId={todo.id} />
 				))
 			)}
 		</ul>

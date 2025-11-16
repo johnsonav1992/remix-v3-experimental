@@ -1,13 +1,18 @@
 import type { Remix } from "@remix-run/dom";
+import { events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
-import type { TodoStore } from "./TodoStore";
+import { App } from "./App";
+import { TodoStore } from "./TodoStore";
 
 export type TodoItemProps = {
 	todoId: number;
-	store: TodoStore;
 };
 
-export function TodoItem(this: Remix.Handle, { todoId, store }: TodoItemProps) {
+export function TodoItem(this: Remix.Handle, { todoId }: TodoItemProps) {
+	const store = this.context.get(App);
+
+	events(store, [TodoStore.todosChanged(() => this.update())]);
+
 	return () => {
 		const todo = store.todos.find((t) => t.id === todoId);
 		if (!todo) return null;
@@ -53,7 +58,6 @@ export function TodoItem(this: Remix.Handle, { todoId, store }: TodoItemProps) {
 				<button
 					type="button"
 					on={pressDown(() => {
-						console.log("Deleting todoId:", todoId);
 						store.deleteTodo(todoId);
 					})}
 					css={{
