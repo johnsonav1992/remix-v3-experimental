@@ -29,9 +29,7 @@ export function TodoList(this: Remix.Handle) {
 					No todos yet. Add one above!
 				</li>
 			) : (
-				store.todos.map((_, index) => (
-					<TodoItem key={index} index={index} />
-				))
+				store.todos.map((todo) => <TodoItem key={todo.id} todoId={todo.id} />)
 			)}
 		</ul>
 	);

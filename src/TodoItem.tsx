@@ -1,23 +1,22 @@
 import type { Remix } from "@remix-run/dom";
-import { dom } from "@remix-run/events";
-import { events } from "@remix-run/events";
+import { dom, events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
 import { App } from "./App";
 import { TodoStore } from "./TodoStore";
 
 export type TodoItemProps = {
-	index: number;
+	todoId: number;
 };
 
-export function TodoItem(this: Remix.Handle, { index }: TodoItemProps) {
+export function TodoItem(this: Remix.Handle) {
 	const store = this.context.get(App);
 
 	// Listen to store changes so we re-render when todos change
 	events(store, [TodoStore.todosChanged(() => this.update())]);
 
-	return () => {
+	return ({ todoId }: TodoItemProps) => {
 		// Look up the todo at this index in the CURRENT store state
-		const todo = store.todos[index];
+		const todo = store.todos.find((t) => t.id === todoId);
 		if (!todo) return null;
 
 		return (
