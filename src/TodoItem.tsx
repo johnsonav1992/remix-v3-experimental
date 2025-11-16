@@ -58,7 +58,6 @@ export function TodoItem(this: Remix.Handle, { index }: TodoItemProps) {
 				<button
 					type="button"
 					on={pressDown((event) => {
-						console.log("Delete clicked for todo.id:", todo.id);
 						event.stopPropagation();
 						event.preventDefault();
 						store.deleteTodo(todo.id);
