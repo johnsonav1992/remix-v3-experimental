@@ -54,9 +54,15 @@ function ChildComponent(this: Remix.Handle, { someProp }: ChildProps) {
 		<div>
 			I'm a child component {someProp} {context.someContextValue}
 			<button
+				css={{
+					color: "red",
+					backgroundColor: "black",
+					padding: "8px",
+				}}
 				type="button"
 				on={pressDown(() => {
 					context.updateSomeContextValue("updated value");
+					console.log(context.someContextValue);
 					this.update();
 				})}
 			>
