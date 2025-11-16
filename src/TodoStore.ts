@@ -14,6 +14,7 @@ export class TodoStore extends EventTarget {
 	nextId = 1;
 
 	addTodo(text: string) {
+		console.log("adding");
 		this.todos.push({
 			id: this.nextId++,
 			text,

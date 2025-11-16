@@ -1,4 +1,5 @@
 import type { Remix } from "@remix-run/dom";
+import { dom } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
 import { App } from "./App";
 
@@ -17,13 +18,10 @@ export function AddTodoForm(this: Remix.Handle) {
 			<input
 				type="text"
 				value={inputValue}
-				on={{
-					type: "input",
-					handler: (event) => {
-						inputValue = event.target.value;
-						this.update();
-					},
-				}}
+				on={dom.input((event) => {
+					inputValue = event.currentTarget.value;
+					this.update();
+				})}
 				placeholder="What needs to be done?"
 				css={{
 					flex: 1,

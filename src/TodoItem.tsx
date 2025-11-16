@@ -1,20 +1,23 @@
 import type { Remix } from "@remix-run/dom";
+import { dom } from "@remix-run/events";
 import { events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
 import { App } from "./App";
 import { TodoStore } from "./TodoStore";
 
 export type TodoItemProps = {
-	todoId: number;
+	index: number;
 };
 
-export function TodoItem(this: Remix.Handle, { todoId }: TodoItemProps) {
+export function TodoItem(this: Remix.Handle, { index }: TodoItemProps) {
 	const store = this.context.get(App);
 
+	// Listen to store changes so we re-render when todos change
 	events(store, [TodoStore.todosChanged(() => this.update())]);
 
 	return () => {
-		const todo = store.todos.find((t) => t.id === todoId);
+		// Look up the todo at this index in the CURRENT store state
+		const todo = store.todos[index];
 		if (!todo) return null;
 
 		return (
@@ -33,12 +36,9 @@ export function TodoItem(this: Remix.Handle, { todoId }: TodoItemProps) {
 				<input
 					type="checkbox"
 					checked={todo.completed}
-					on={{
-						type: "change",
-						handler: () => {
-							store.toggleTodo(todoId);
-						},
-					}}
+					on={dom.input(() => {
+						store.toggleTodo(todo.id);
+					})}
 					css={{
 						width: "20px",
 						height: "20px",
@@ -57,8 +57,11 @@ export function TodoItem(this: Remix.Handle, { todoId }: TodoItemProps) {
 				</span>
 				<button
 					type="button"
-					on={pressDown(() => {
-						store.deleteTodo(todoId);
+					on={pressDown((event) => {
+						console.log("Delete clicked for todo.id:", todo.id);
+						event.stopPropagation();
+						event.preventDefault();
+						store.deleteTodo(todo.id);
 					})}
 					css={{
 						padding: "6px 12px",
