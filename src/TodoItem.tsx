@@ -11,12 +11,11 @@ export type TodoItemProps = {
 export function TodoItem(this: Remix.Handle) {
 	const store = this.context.get(App);
 
-	// Listen to store changes so we re-render when todos change
 	events(store, [TodoStore.todosChanged(() => this.update())]);
 
 	return ({ todoId }: TodoItemProps) => {
-		// Look up the todo at this index in the CURRENT store state
 		const todo = store.todos.find((t) => t.id === todoId);
+
 		if (!todo) return null;
 
 		return (
