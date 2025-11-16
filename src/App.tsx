@@ -1,12 +1,27 @@
 import type { Remix } from "@remix-run/dom";
+import { createEventType, events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
 
-export function App(this: Remix.Handle<{ someContextValue: string }>) {
-	let count = 0;
+const [change, createChange] = createEventType("ctx:change");
 
-	this.context.set({
-		someContextValue: "hello from context",
-	});
+class CTX extends EventTarget {
+	someContextValue = "default value";
+
+	updateSomeContextValue(newValue: string) {
+		this.someContextValue = newValue;
+		this.dispatchEvent(createChange());
+	}
+
+	static change = change;
+}
+
+export function App(this: Remix.Handle<CTX>) {
+	let count = 0;
+	const ctx = new CTX();
+
+	this.context.set(ctx);
+
+	events(ctx, [CTX.change(() => this.update())]);
 
 	return () => (
 		<>
@@ -20,6 +35,7 @@ export function App(this: Remix.Handle<{ someContextValue: string }>) {
 			>
 				Click Me {count}
 			</button>
+			{ctx.someContextValue}
 			<ChildComponent someProp="hey" />
 		</>
 	);
@@ -34,5 +50,18 @@ function ChildComponent(this: Remix.Handle, { someProp }: ChildProps) {
 
 	console.log(context.someContextValue);
 
-	return () => <div>I'm a child component {someProp} </div>;
+	return () => (
+		<div>
+			I'm a child component {someProp} {context.someContextValue}
+			<button
+				type="button"
+				on={pressDown(() => {
+					context.updateSomeContextValue("updated value");
+					this.update();
+				})}
+			>
+				Update ctx
+			</button>
+		</div>
+	);
 }
