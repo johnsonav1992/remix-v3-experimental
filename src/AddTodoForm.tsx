@@ -5,6 +5,7 @@ import { App } from "./App";
 
 export function AddTodoForm(this: Remix.Handle) {
 	const store = this.context.get(App);
+
 	let inputValue = "";
 
 	return () => (
@@ -45,6 +46,7 @@ export function AddTodoForm(this: Remix.Handle) {
 					padding: "12px 24px",
 					fontSize: "16px",
 					backgroundColor: "#4CAF50",
+					"&:hover": { backgroundColor: "#55c559ff" },
 					color: "white",
 					border: "none",
 					borderRadius: "4px",

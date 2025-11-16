@@ -2,6 +2,7 @@ import type { Remix } from "@remix-run/dom";
 import { createEventType, events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
 import { AddTodoForm } from "./AddTodoForm";
+import { Posts } from "./Posts";
 import { TodoList } from "./TodoList";
 import { TodoStore } from "./TodoStore";
 
@@ -117,6 +118,7 @@ export function App(this: Remix.Handle<TodoStore>) {
 			>
 				{store.todos.filter((t) => !t.completed).length} items left
 			</div>
+			<Posts />
 		</div>
 	);
 }
