@@ -1,8 +1,8 @@
 import type { Remix } from "@remix-run/dom";
 import { dom, events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
-import { App } from "./App";
-import { TodoStore } from "./TodoStore";
+import { App } from "../App";
+import { TodoStore } from "../store/TodoStore";
 
 export type TodoItemProps = {
 	todoId: number;

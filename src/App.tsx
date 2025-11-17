@@ -1,10 +1,10 @@
 import type { Remix } from "@remix-run/dom";
 import { createEventType, events } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
-import { AddTodoForm } from "./AddTodoForm";
-import { Posts } from "./Posts";
-import { TodoList } from "./TodoList";
-import { TodoStore } from "./TodoStore";
+import { AddTodoForm } from "./components/AddTodoForm";
+import { Posts } from "./components/Posts";
+import { TodoList } from "./components/TodoList";
+import { TodoStore } from "./store/TodoStore";
 
 const [ctxChange, createCtxChange] = createEventType("ctx:change");
 

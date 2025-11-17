@@ -1,7 +1,7 @@
 import type { Remix } from "@remix-run/dom";
 import { dom } from "@remix-run/events";
 import { pressDown } from "@remix-run/events/press";
-import { App } from "./App";
+import { App } from "../App";
 
 export function AddTodoForm(this: Remix.Handle) {
 	const store = this.context.get(App);
